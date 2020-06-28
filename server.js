@@ -18,7 +18,7 @@ var app = express();
 
 app.use(helmet());
 //Sets frameguard, prevent clickjacking
-app.use(helmet.frameguard({action: deny}));
+app.use(helmet.frameguard({action: 'deny'}));
 //sets 'X-DNS-Prefetch-Control: off
 app.use(helmet.dnsPrefetchControl());
 //sets 'referrer-policy: same origin'
@@ -54,12 +54,12 @@ fccTestingRoutes(app);
 apiRoutes(app);
 
 MongoClient.connect(CONNECTION_STRING)
-.then(cleint=> {
-  const db = client.DB('message-board');
+.then(client=> {
+  const db = client.db('message-board');
   const collection = db.collection('board_threads');
   app.locals.db = db;
-}).catch(error=>console.log(error);
-)
+}).catch(error=>console.log(error)
+);
 
 //Sample Front-end
 
