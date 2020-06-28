@@ -8,8 +8,21 @@ var cors        = require('cors');
 var apiRoutes         = require('./routes/api.js');
 var fccTestingRoutes  = require('./routes/fcctesting.js');
 var runner            = require('./test-runner');
+const helmet = require('helmet');
+const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
+
+const CONNECTION_STRING =  process.env.DB;
 
 var app = express();
+
+app.use(helmet());
+//Sets frameguard, prevent clickjacking
+app.use(helmet.frameguard({action: deny}));
+//sets 'X-DNS-Prefetch-Control: off
+app.use(helmet.dnsPrefetchControl());
+//sets 'referrer-policy: same origin'
+app.use(helmet.referrerPolicy({policy: 'same-origin'}));
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
@@ -40,6 +53,14 @@ fccTestingRoutes(app);
 //Routing for API 
 apiRoutes(app);
 
+MongoClient.connect(CONNECTION_STRING)
+.then(cleint=> {
+  const db = client.DB('message-board');
+  const collection = db.collection('board_threads');
+  app.locals.db = db;
+}).catch(error=>console.log(error);
+)
+
 //Sample Front-end
 
     
@@ -51,8 +72,8 @@ app.use(function(req, res, next) {
 });
 
 //Start our server and tests!
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Listening on port " + process.env.PORT);
+app.listen(3000, function () {
+  console.log("Listening on port 3000");
   if(process.env.NODE_ENV==='test') {
     console.log('Running Tests...');
     setTimeout(function () {
