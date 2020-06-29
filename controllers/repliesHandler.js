@@ -74,7 +74,7 @@ function RepliesHandler() {
 
     db.collection('board').findOneAndUpdate(
       {_id: ObjectId(threadId),
-      replies: {$elemMatch: {_id: ObjectId(replyId), delete_password: password}}
+      replies: {$elemMatch: {_id: ObjectId(replyId), delete_password: password} }
       },
       {$set: {'replies.$.text': '[deleted]'}},
       {returnNewDocument: true}
@@ -87,6 +87,7 @@ function RepliesHandler() {
       }
     }).catch(err=>console.log(err)
     )
+    
   }
 }
 
