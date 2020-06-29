@@ -93,6 +93,17 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
+
+      test('report a thread, change reported value to true', function(done) {
+        chai.request(server)
+        .put('api/threads/test')
+        .send({thread_id: thread_id1})
+        .end(function(err, res) {
+          assert.equal(res. status, 200);
+          assert.equal(res.text, 'success');
+          done();
+        })
+      })
       
     });
     
