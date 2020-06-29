@@ -15,10 +15,29 @@ chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
 
+  let thread_id;
+  let thread_id1;
+  let reply_id;
+
   suite('API ROUTING FOR /api/threads/:board', function() {
     
     suite('POST', function() {
       
+      test('create new thread', function(done) {
+        chai.request(server)
+        .post('/api/threads/test')
+        .send({text: 'test text', delete_password: 'test password'})
+        .end(function (err, res) {
+          assert.equal(res.status, 200)
+        });
+        chai.request(server)
+        .send({text: 'test text', delete_password: 'test password'})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          done()
+        })
+      })
+
     });
     
     suite('GET', function() {
