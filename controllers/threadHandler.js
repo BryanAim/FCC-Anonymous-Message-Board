@@ -2,7 +2,7 @@ const ObjectId = require('mongodb').ObjectID;
 
 function ThreadHandler() {
   this.newThread = function(req, res) {
-    const db = app.locals.db // mongodb
+    const db = req.app.locals.db // mongodb
     const board = req.params.board;
 
     let thread  = {
