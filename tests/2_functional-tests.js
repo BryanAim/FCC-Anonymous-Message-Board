@@ -167,6 +167,17 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE', function() {
+
+      test('delete reply, success', function(done) {
+        chai.request(server)
+        .delete('/api/replies/test')
+        .send({thread_id: thread_id1, reply_id: reply_id, delete_password: 'wrong'})
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done();
+        })
+      })
       
     });
     
