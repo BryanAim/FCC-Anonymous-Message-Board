@@ -152,6 +152,17 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
+
+      test('report reply, change reported reply value to true', function (done) {
+        chai.request(server)
+        .put('api/replies/test')
+        .send({thread_id: thread_id1, reply_id: reply_id})
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done();
+        })
+      })
       
     });
     
