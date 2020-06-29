@@ -113,6 +113,16 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/replies/:board', function() {
     
     suite('POST', function() {
+
+      test('reply to a thread', function (done) {
+        chai.request(server)
+        .post('/api/replies/test')
+        .send({thread_id: thread_id1, text: 'reply', delete_password: 'password'})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          done()
+        })
+      })
       
     });
     
