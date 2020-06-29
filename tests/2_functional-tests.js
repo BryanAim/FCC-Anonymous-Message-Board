@@ -120,13 +120,34 @@ suite('Functional Tests', function() {
         .send({thread_id: thread_id1, text: 'reply', delete_password: 'password'})
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          done()
+          done();
         })
       })
       
     });
     
     suite('GET', function() {
+      test('thread with entire replies', function (done) {
+        chai.request(server)
+        .get('/api/replies/test')
+        .query({thread_id: thread_id1})
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.property(res.body, '_id');
+          assert.property(res.body, 'text');
+          assert.property(res.body, 'created_on');
+          assert.property(res.body, 'bimped_on');
+          assert.property(res.body, 'replies');
+          assert.notProperty(res.body, 'delete_password');
+          assert.notProperty(res.body, 'reported');
+          assert.isArray(res.body.replies);
+          assert.notProperty(res.body.replies[0], 'delete_password');
+          assert.notProperty(res.body.replies[0], 'reported');
+          assert.equal(res.body.replies[0].text, 'reply');
+          reply_id = res.bodt.replies[0]._id;
+          done();
+        })
+      })
       
     });
     
