@@ -42,6 +42,28 @@ suite('Functional Tests', function() {
     
     suite('GET', function() {
       
+      test('most recent 10 threads with most recent 3 replies', function(done) {
+        chai.request(server)
+        .get('/api/thread/test')
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.isBelow(res.body.length, 11);
+          assert.property(res.body[0], '_id');
+          assert.property(res.body[0], 'text');
+          assert.property(res.body[0], 'created_on');
+          assert.property(res.body[0], 'bumped_on');
+          assert.property(res.body[0], 'replies');
+          assert.notProperty(res.body[0], 'reported');
+          assert.notProperty(res.body[0], 'delete_password');
+          assert.isArray(res.body[0].replies);
+          assert.isBelow(res.body[0].replies.length, 4);
+          thread_id = res.body[0]._id;
+          thread_id1 = res.body[1]._id;
+          done();
+        })
+      })
+
     });
     
     suite('DELETE', function() {
