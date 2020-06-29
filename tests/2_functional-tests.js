@@ -75,7 +75,18 @@ suite('Functional Tests', function() {
         .end(function (err, res) {
           assert.equal(res.status, 200);
           assert.equal(res.text, 'success');
-          done()
+          done();
+        });
+      });
+
+      test('delete a thread with incorrect password', function (done) {
+        chai.request(server)
+        .delete('/api/threads/test')
+        .send({thread_id: thread_id, delete_password: 'wrong password'})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'incorrect password');
+          done();
         })
       })
 
