@@ -68,6 +68,17 @@ suite('Functional Tests', function() {
     
     suite('DELETE', function() {
       
+      test('delete a thread, success', function (done) {
+        chai.request(server)
+        .delete('/api/threads/test')
+        .send({thread_id: thread_id, delete_password: 'test password'})
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done()
+        })
+      })
+
     });
     
     suite('PUT', function() {
