@@ -1,8 +1,8 @@
 const ObjectId = require('mongodb').ObjectID;
 
 function RepliesHandler() {
-  this.addReply = function(req, res) {
-    const db =req.app.locals.db;
+  this.addReply = function (req, res) {
+    const db = req.app.locals.db;
     const board = req.params.board;
     const id = req.body.thread_id;
 
@@ -15,12 +15,12 @@ function RepliesHandler() {
     }
 
     db.collection('board').findOneAndUpdate(
-      {_id: ObjectId(id)},
-      {$push: {replies}, $set: {bumped_on: new Date()}},
-      {returnNewDocument: true},
+      { _id: ObjectId(id) },
+      { $push: { replies }, $set: { bumped_on: new Date() } },
+      { returnNewDocument: true },
       (err, data) => {
         if (!err) {
-          res.redirect('/b/'+board+'/'+id)
+          res.redirect('/b/' + board + '/' + id)
         }
       }
     )
@@ -37,13 +37,13 @@ function RepliesHandler() {
       'replies.reported': 0
     }
 
-    db.collection('board').find({_id: ObjectId(id)})
-    .project(project)
-    .toArray((err, doc)=> {
-      if (!err) {
-        res.json(doc[0])
-      }
-    });
+    db.collection('board').find({ _id: ObjectId(id) })
+      .project(project)
+      .toArray((err, doc) => {
+        if (!err) {
+          res.json(doc[0])
+        }
+      });
   }
 
   this.reportReply = async function (req, res) {
@@ -57,37 +57,38 @@ function RepliesHandler() {
         _id: ObjectId(threadId),
         'replies._id': ObjectId(replyId)
       },
-      {$set: {'replies.$.reported': true}},
+      { $set: { 'replies.$.reported': true } },
       (err, doc) => {
         (err) ? res.send('report unsuccessful') : res.send('success');
       }
     )
-    
+
   }
 
   this.deleteReply = function (req, res) {
     const db = req.app.locals.db;
     let board = req.params.board;
-    let password =req.body.delete_password;
+    let password = req.body.delete_password;
     let threadId = req.params.thread_id;
     let replyId = req.body.reply_id;
 
     db.collection('board').findOneAndUpdate(
-      {_id: ObjectId(threadId),
-      replies: {$elemMatch: {_id: ObjectId(replyId), delete_password: password} }
+      {
+        _id: ObjectId(threadId),
+        replies: { $elemMatch: { _id: ObjectId(replyId), delete_password: password } }
       },
-      {$set: {'replies.$.text': '[deleted]'}},
-      {returnNewDocument: true}
+      { $set: { 'replies.$.text': '[deleted]' } },
+      { returnNewDocument: true }
     )
-    .then((docs)=> {
-      if (docs.value === null) {
-        res.send('incorrect password')
-      } else {
-        res.send('success!')
-      }
-    }).catch(err=>console.log(err)
-    )
-    
+      .then((docs) => {
+        if (docs.value === null) {
+          res.send('incorrect password')
+        } else {
+          res.send('success!')
+        }
+      }).catch(err => console.log(err)
+      )
+
   }
 }
 

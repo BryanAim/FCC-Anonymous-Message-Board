@@ -1,11 +1,11 @@
 const ObjectId = require('mongodb').ObjectID;
 
 function ThreadHandler() {
-  this.newThread = function(req, res) {
+  this.newThread = function (req, res) {
     const db = req.app.locals.db // mongodb
     const board = req.params.board;
 
-    let thread  = {
+    let thread = {
       text: req.body.text,
       created_on: new Date(),
       bumped_on: new Date(),
@@ -16,12 +16,12 @@ function ThreadHandler() {
 
     db.collection('board').insertOne(thread, (err, data) => {
       if (!err) {
-        res.redirect('/b/'+board+'/')
+        res.redirect('/b/' + board + '/')
       }
     })
   }
 
-  this.threadList = function(req, res) {
+  this.threadList = function (req, res) {
     const db = req.app.locals.db //mongodb
     let board = req.params.board;
     let project = {
@@ -32,37 +32,37 @@ function ThreadHandler() {
     };
 
     db.collection('board')
-    .find({})
-    .project(project)
-    .sort({bumped_on: -1})
-    .limit(10)
-    .toArray((err, data)=> {
-      if (!err) {
-        for (const index in data) {
-          data[index].replycount = data[index].replies.length;
-          if (data[index].replies.length>3) {
-            data[index].replies = data[index].replies.slice(0, 3); // limit 3 replies
-            
+      .find({})
+      .project(project)
+      .sort({ bumped_on: -1 })
+      .limit(10)
+      .toArray((err, data) => {
+        if (!err) {
+          for (const index in data) {
+            data[index].replycount = data[index].replies.length;
+            if (data[index].replies.length > 3) {
+              data[index].replies = data[index].replies.slice(0, 3); // limit 3 replies
+
+            }
           }
+          res.json(data)
         }
-        res.json(data)
-      }
-    });
+      });
   }
 
-  this.reportThread = function(req, res) {
+  this.reportThread = function (req, res) {
     const db = req.app.locals.db;
     let id = req.body.thread_id;
     let board = req.params.board;
 
     db.collection('board')
-    .findOneAndUpdate(
-      {_id: ObjectId(id)},
-      {$set: {reported: true}},
-      (err, doc) => {
-        (err) ? res.send('report failed') : res.send('success')
-      }
-    )
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { reported: true } },
+        (err, doc) => {
+          (err) ? res.send('report failed') : res.send('success')
+        }
+      )
   }
 
   this.deleteThread = async function (req, res) {
@@ -71,15 +71,15 @@ function ThreadHandler() {
     let password = req.body.delete_password;
     let id = req.body.thread_id;
 
-    let response = await db.collection('board').deleteOne({_id: ObjectId(id), delete_password: password});
+    let response = await db.collection('board').deleteOne({ _id: ObjectId(id), delete_password: password });
 
     if (response) {
       if (response.deletedCount > 0) {
         res.send('success');
       } else {
-      res.send('incorrect password')
+        res.send('incorrect password')
+      }
     }
-   }
   }
 
 }

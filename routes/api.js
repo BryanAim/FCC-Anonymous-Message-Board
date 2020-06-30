@@ -16,17 +16,17 @@ module.exports = function (app) {
 
   const threadHandler = new ThreadHandler();
   const repliesHandler = new RepliesHandler();
-  
+
   app.route('/api/threads/:board')
-  .post(threadHandler.newThread)
-  .get(threadHandler.threadList)
-  .put(threadHandler.reportThread)
-  .delete(threadHandler.deleteThread);
-    
+    .post(threadHandler.newThread)
+    .get(threadHandler.threadList)
+    .put(threadHandler.reportThread)
+    .delete(threadHandler.deleteThread);
+
   app.route('/api/replies/:board')
-  .post(repliesHandler.addReply)
-  .get(repliesHandler.replyList)
-  .put(repliesHandler.reportReply)
-  .delete(repliesHandler.deleteReply);
+    .post(repliesHandler.addReply)
+    .get(repliesHandler.replyList)
+    .put(repliesHandler.reportReply)
+    .delete(repliesHandler.deleteReply);
 
 };
