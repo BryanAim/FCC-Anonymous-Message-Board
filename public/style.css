@@ -44,3 +44,94 @@ header {
 #submitNewThread {
   margin: 50px;
 }
+
+h1, h2, h3, h4 {
+  color: #1d2129;
+}
+
+/* User Stories Section */
+#userstories {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#userstories ol {
+  padding-left: 20px;
+}
+
+#userstories li {
+  margin-bottom: 10px;
+}
+
+#userstories img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+/* Forms */
+form {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #dddfe2;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+input[type="submit"] {
+  background-color: #4267b2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #365899;
+}
+
+/* API Tests Section */
+#testui {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #dddfe2;
+  margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  input[type="text"], textarea, input[type="submit"] {
+    width: 100%;
+  }
+}
